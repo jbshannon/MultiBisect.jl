@@ -192,8 +192,7 @@ end
 """
     marchingsquares(edge)
 
-Return the midpoint of the edge, in a manner similar to the [marching squares algorithm](
-https://en.wikipedia.org/wiki/Marching_squares). Does not require any function evaluations.
+Return the midpoint of the edge, in a manner similar to the [marching squares algorithm](https://en.wikipedia.org/wiki/Marching_squares). Does not require any function evaluations.
 
 # Examples
 

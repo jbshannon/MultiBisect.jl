@@ -1,7 +1,12 @@
 using MultiBisect
 using Documenter
 
-DocMeta.setdocmeta!(MultiBisect, :DocTestSetup, :(using MultiBisect); recursive=true)
+DocTestSetup = quote
+    using MultiBisect
+    using MultiBisect: forwardinds, expandzeros, edgetuple, edgebounds, edgedim, domainindex, revert
+    import MultiBisect.Roots as Roots
+end
+DocMeta.setdocmeta!(MultiBisect, :DocTestSetup, DocTestSetup; recursive=true)
 
 makedocs(;
     modules=[MultiBisect],
@@ -16,4 +21,9 @@ makedocs(;
     pages=[
         "Home" => "index.md",
     ],
+)
+
+deploydocs(
+    repo="github.com/jbshannon/MultiBisect.jl.git",
+    push_preview=true,
 )
