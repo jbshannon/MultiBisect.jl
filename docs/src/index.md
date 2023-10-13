@@ -2,9 +2,9 @@
 CurrentModule = MultiBisect
 ```
 
-# MultiBisect
+# MultiBisect.jl
 
-Documentation for [MultiBisect](https://github.com/jbshannon/MultiBisect.jl).
+Documentation for [MultiBisect.jl](https://github.com/jbshannon/MultiBisect.jl).
 
 ```@index
 ```

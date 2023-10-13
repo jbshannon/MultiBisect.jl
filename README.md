@@ -25,7 +25,6 @@ The task of finding the root of a continuous function on an interval where its s
 ```julia
 f(z) = 1 - sum(abs2, z)
 circle = map(t -> (cos(t), sin(t)), 0:0.01:π/2)
-xs = 0:0.01:1
 
 using CairoMakie
 fig = Figure(resolution = (500, 500))
