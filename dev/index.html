@@ -1,318 +1,68 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Home · MultiBisect.jl</title><meta name="title" content="Home · MultiBisect.jl"/><meta property="og:title" content="Home · MultiBisect.jl"/><meta property="twitter:title" content="Home · MultiBisect.jl"/><meta name="description" content="Documentation for MultiBisect.jl."/><meta property="og:description" content="Documentation for MultiBisect.jl."/><meta property="twitter:description" content="Documentation for MultiBisect.jl."/><script data-outdated-warner src="assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="assets/documenter.js"></script><script src="search_index.js"></script><script src="siteinfo.js"></script><script src="../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href>MultiBisect.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li class="is-active"><a class="tocitem" href>Home</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Home</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Home</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/jbshannon/MultiBisect.jl/blob/main/docs/src/index.md#" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="MultiBisect.jl"><a class="docs-heading-anchor" href="#MultiBisect.jl">MultiBisect.jl</a><a id="MultiBisect.jl-1"></a><a class="docs-heading-anchor-permalink" href="#MultiBisect.jl" title="Permalink"></a></h1><p>Documentation for <a href="https://github.com/jbshannon/MultiBisect.jl">MultiBisect.jl</a>.</p><ul><li><a href="#MultiBisect.bisect-Tuple{Any, Any}"><code>MultiBisect.bisect</code></a></li><li><a href="#MultiBisect.corners-Tuple{CartesianIndices}"><code>MultiBisect.corners</code></a></li><li><a href="#MultiBisect.domainindex-Union{Tuple{N}, Tuple{Any, CartesianIndex{N}}} where N"><code>MultiBisect.domainindex</code></a></li><li><a href="#MultiBisect.edgebounds-Tuple{Any}"><code>MultiBisect.edgebounds</code></a></li><li><a href="#MultiBisect.edgedim-Tuple{Any}"><code>MultiBisect.edgedim</code></a></li><li><a href="#MultiBisect.edgeroot-Tuple{Any, Any, Any}"><code>MultiBisect.edgeroot</code></a></li><li><a href="#MultiBisect.edges-Union{Tuple{BisectionGrid{T, N}}, Tuple{N}, Tuple{T}} where {T, N}"><code>MultiBisect.edges</code></a></li><li><a href="#MultiBisect.edgetuple-Tuple{Any}"><code>MultiBisect.edgetuple</code></a></li><li><a href="#MultiBisect.expandzeros-Tuple{Any}"><code>MultiBisect.expandzeros</code></a></li><li><a href="#MultiBisect.forwardinds-Tuple{Any}"><code>MultiBisect.forwardinds</code></a></li><li><a href="#MultiBisect.interpolate-Union{Tuple{N}, Tuple{T}, Tuple{Any, BisectionGrid{T, N}}} where {T, N}"><code>MultiBisect.interpolate</code></a></li><li><a href="#MultiBisect.linearroot-Tuple{Any, Any}"><code>MultiBisect.linearroot</code></a></li><li><a href="#MultiBisect.marchingsquares-Tuple{Any}"><code>MultiBisect.marchingsquares</code></a></li><li><a href="#MultiBisect.revert-Tuple{BisectionGrid}"><code>MultiBisect.revert</code></a></li></ul><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="MultiBisect.bisect-Tuple{Any, Any}" href="#MultiBisect.bisect-Tuple{Any, Any}"><code>MultiBisect.bisect</code></a> — <span class="docstring-category">Method</span></header><section><div><pre><code class="language-julia hljs">bisect(f, grid; threaded=false, monotonic=false, iterations=5, verbose=false)</code></pre><p>Perform the multidimensional bisection algorithm of function <code>f</code> on an initial <code>grid</code> of evaluation points.</p><p><strong>Arguments</strong></p><p><strong>Positional Arguments</strong></p><ul><li><code>f</code>: function to be evaluated</li><li><code>grid</code>: a tuple of ranges describing the initial evaluation grid</li></ul><p><strong>Keyword Arguments</strong></p><ul><li><code>threaded</code>: set to <code>true</code> for multithreaded evaluation</li><li><code>monotonic</code>: set to true if <code>f</code> is known to be monotonic in each dimension</li><li><code>iterations</code>: number of times to iterate the algorithm</li><li><code>verbose</code>: set to <code>true</code> to print the number of new function evaluations at each iteration</li></ul><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; grid = (0.0:1.0, 0.0:1.0);
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Home · MultiBisect.jl</title><meta name="title" content="Home · MultiBisect.jl"/><meta property="og:title" content="Home · MultiBisect.jl"/><meta property="twitter:title" content="Home · MultiBisect.jl"/><meta name="description" content="Documentation for MultiBisect.jl."/><meta property="og:description" content="Documentation for MultiBisect.jl."/><meta property="twitter:description" content="Documentation for MultiBisect.jl."/><script data-outdated-warner src="assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="assets/documenter.js"></script><script src="search_index.js"></script><script src="siteinfo.js"></script><script src="../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href>MultiBisect.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li class="is-active"><a class="tocitem" href>Home</a><ul class="internal"><li><a class="tocitem" href="#Installation"><span>Installation</span></a></li><li><a class="tocitem" href="#The-Problem"><span>The Problem</span></a></li><li><a class="tocitem" href="#Bisection"><span>Bisection</span></a></li><li><a class="tocitem" href="#Interpolation"><span>Interpolation</span></a></li><li><a class="tocitem" href="#More-dimensions!"><span>More dimensions!</span></a></li></ul></li><li><a class="tocitem" href="api/">API Reference</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Home</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Home</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/jbshannon/MultiBisect.jl/blob/main/docs/src/index.md#" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="MultiBisect.jl"><a class="docs-heading-anchor" href="#MultiBisect.jl">MultiBisect.jl</a><a id="MultiBisect.jl-1"></a><a class="docs-heading-anchor-permalink" href="#MultiBisect.jl" title="Permalink"></a></h1><p>This Julia package provides a lightweight, idiomatic implementation of the <a href="https://en.wikipedia.org/wiki/Bisection_method">bisection method</a> of root-finding in an arbitrary number of dimensions.</p><p>This package exports the <code>BisectionGrid</code> type, which tracks an <code>N</code>-dimensional bisection with only three <code>Array{Bool, N}</code>s and one <code>NTuple{N, R &lt;: AbstractRange}</code>. Using ordinary boolean arrays not only uses minimal memory, but also leverages the magic of base Julia&#39;s <code>CartesianIndices</code> to handle any number of dimensions without code modification.</p><blockquote><p>[!IMPORTANT] This package, while functional, is still experimental and subject to change. For a more mature package with similar functionality, see <a href="https://github.com/bachrathyd/MDBM.jl">MDBM.jl</a></p></blockquote><h2 id="Installation"><a class="docs-heading-anchor" href="#Installation">Installation</a><a id="Installation-1"></a><a class="docs-heading-anchor-permalink" href="#Installation" title="Permalink"></a></h2><p>This package is not yet registered, so installation is only available by url from the <code>pkg&gt;</code> prompt:</p><pre><code class="language-julia-repl hljs">pkg&gt; add https://github.com/jbshannon/MultiBisect.jl</code></pre><h2 id="The-Problem"><a class="docs-heading-anchor" href="#The-Problem">The Problem</a><a id="The-Problem-1"></a><a class="docs-heading-anchor-permalink" href="#The-Problem" title="Permalink"></a></h2><p>The task of finding the root of a continuous function on an interval where its sign is known to change is a relatively well-known and simple problem, but extending the method to handle two or more dimensions adds complexity. For example, consider the unit circle on the domain <span>$[0,1]^2$</span>.</p><pre><code class="language-julia hljs">f(z) = 1 - sum(abs2, z)
+circle = map(t -&gt; (cos(t), sin(t)), 0:0.01:π/2)
 
-julia&gt; bisect(x -&gt; 1 - sum(abs2, x), grid)
-BisectionGrid{Float64, 2}
-       Domain: (0.0:0.0625:1.0, 0.0:0.0625:1.0)
-  Grid points: 289
-  Evaluations: 112
+using CairoMakie
+fig = Figure(resolution = (500, 500))
+ax = Axis(fig[1, 1])
+lines!(ax, circle; color=:black)
+fig</code></pre><p><img src="images/README/circle1.svg" alt/></p><p>The naive, brute-force approach would be to evaluate the function on a grid of points, but many of these evaluations would be far away from the root (in two dimensions, a zero level curve) and not provide any information about the shape of the level curve.</p><pre><code class="language-julia hljs">xs = range(0, 1, length=65)
+XS = Iterators.product(xs, xs) |&gt; collect
+F = f.(XS)
 
+scatter!(ax, XS[F .&gt; 0]; markersize=3)
+scatter!(ax, XS[F .≤ 0]; markersize=3)
+fig</code></pre><p><img src="images/README/circle2.svg" alt/></p><p>The level curve must lie between the positive points and the negative points. Two adjacent points that share the same sign do not tell us anything about the level curve, so we could improve our efficiency if we avoided evaluating the function in regions where the sign does not appear to change.</p><h2 id="Bisection"><a class="docs-heading-anchor" href="#Bisection">Bisection</a><a id="Bisection-1"></a><a class="docs-heading-anchor-permalink" href="#Bisection" title="Permalink"></a></h2><p>Using the bisection method, we can reduce the number of function evaluations by increasing the fineness of the grid only in places we know the function must change sign. This package provides the function <code>bisect(f, grid)</code>, which applies the algorithm iteratively to the <code>grid</code> using the function <code>f</code>:</p><pre><code class="language-julia hljs">using MultiBisect
+BG = bisect(f, (0.0:1.0, 0.0:1.0); iterations=7)
+posx, negx = splitsign(BG)
 
-julia&gt; bisect(x -&gt; x[2] - x[1], grid)
-BisectionGrid{Float64, 2}
-       Domain: (0.0:0.0625:1.0, 0.0:0.0625:1.0)
-  Grid points: 289
-  Evaluations: 112
-
-
-julia&gt; bisect(x -&gt; x[2] - x[1], grid; monotonic=true)
-BisectionGrid{Float64, 2}
-       Domain: (0.0:0.0625:1.0, 0.0:0.0625:1.0)
-  Grid points: 289
-  Evaluations: 67</code></pre><p><strong>Extended help</strong></p><p><strong>Algorithm</strong></p><p>The algorithm proceeds by splitting a grid of <span>$N$</span>-dimensional hypercubes in &quot;half&quot;.</p><p><strong>Multithreading</strong></p><p>Set the keyword argument <code>threaded=true</code> to make evaluation of the function at each iteration multithreaded. For functions that are very cheap to evaluate, the overhead from setting up threads will actually make each iteration longer. However, this effect disappears quickly.</p><p><strong>Example</strong></p><pre><code class="nohighlight hljs">julia&gt; ffast(x) = 1 - sum(abs2, x);
-
-julia&gt; grid = (0.0:1.0, 0.0:1.0);
-
-julia&gt; @btime bisect(ffast, $grid; threaded=false);
-  49.720 μs (40 allocations: 3.59 KiB)
-
-julia&gt; @btime bisect(ffast, $grid; threaded=true);
-  146.173 μs (163 allocations: 18.23 KiB)
-
-julia&gt; fslow(x) = (sleep(0.1); ffast(x))
-fslow (generic function with 1 method)
-
-julia&gt; @btime bisect(fslow, $grid; threaded=false);
-  11.397 s (605 allocations: 20.83 KiB)
-
-julia&gt; @btime bisect(fslow, $grid; threaded=true);
-  3.170 s (736 allocations: 35.45 KiB)</code></pre><p><strong>Monotonicity</strong></p><p>If the function <code>f</code> is known to be monotonic, then the number of evaluations can be reduced by inferring the behavior of <code>f</code> along edges where both vertices have the same sign.</p><p><strong>Example</strong></p><pre><code class="nohighlight hljs">julia&gt; bisect(x -&gt; 1 - sum(abs2, x), (0.0:1.0, 0.0:1.0); monotonic=false)
-BisectionGrid{Float64, 2}
-       Domain: (0.0:0.0625:1.0, 0.0:0.0625:1.0)
-  Grid points: 289
-  Evaluations: 112
-
-
-julia&gt; bisect(x -&gt; 1 - sum(abs2, x), (0.0:1.0, 0.0:1.0); monotonic=true)
-BisectionGrid{Float64, 2}
-       Domain: (0.0:0.0625:1.0, 0.0:0.0625:1.0)
-  Grid points: 289
-  Evaluations: 80</code></pre><p><strong>Iterations</strong></p><p>For finer grids, repeat the algorithm for more iterations.</p><p><strong>Example</strong></p><pre><code class="nohighlight hljs">julia&gt; bisect(x -&gt; 1 - sum(abs2, x), (0.0:1.0, 0.0:1.0))
-BisectionGrid{Float64, 2}
-       Domain: (0.0:0.0625:1.0, 0.0:0.0625:1.0)
-  Grid points: 289
-  Evaluations: 112
-
-
-julia&gt; bisect(x -&gt; 1 - sum(abs2, x), (0.0:1.0, 0.0:1.0); iterations=3)
-BisectionGrid{Float64, 2}
-       Domain: (0.0:0.25:1.0, 0.0:0.25:1.0)
-  Grid points: 25
-  Evaluations: 22
-
-
-julia&gt; bisect(x -&gt; 1 - sum(abs2, x), (0.0:1.0, 0.0:1.0); iterations=7)
+fig = Figure(resolution = (500, 500))
+ax = Axis(fig[1, 1])
+lines!(ax, circle; color=:black)
+scatter!(ax, posx; markersize=3)
+scatter!(ax, negx; markersize=3)
+fig</code></pre><p><img src="images/README/circle3.svg" alt/></p><p>The resulting grid is the same size and identifies the exact same sign changes as before, but with far fewer function evaluations – nearly 90% fewer!</p><pre><code class="language-julia-repl hljs">julia&gt; BG
 BisectionGrid{Float64, 2}
        Domain: (0.0:0.015625:1.0, 0.0:0.015625:1.0)
   Grid points: 4225
-  Evaluations: 490</code></pre><p><strong>Logging</strong></p><p>For longer-running bisections, it may be useful to report the number of new evaluations as a kind of thread-safe progress meter.</p><p><strong>Example</strong></p><pre><code class="nohighlight hljs">julia&gt; bisect(x -&gt; 1 - sum(abs2, x), (0.0:1.0, 0.0:1.0); verbose=true)
-[ Info: Iteration 1: 4 gridpoints (4 evaluations)
-[ Info: Iteration 2: 9 gridpoints (5 evaluations)
-[ Info: Iteration 3: 25 gridpoints (13 evaluations)
-[ Info: Iteration 4: 81 gridpoints (29 evaluations)
-[ Info: Iteration 5: 289 gridpoints (61 evaluations)
-BisectionGrid{Float64, 2}
-       Domain: (0.0:0.0625:1.0, 0.0:0.0625:1.0)
-  Grid points: 289
-  Evaluations: 112
+  Evaluations: 490
 
 
-julia&gt; bisect(x -&gt; 1 - sum(abs2, x), (0.0:1.0, 0.0:1.0); verbose=true, iterations=7)
-[ Info: Iteration 1: 4 gridpoints (4 evaluations)
-[ Info: Iteration 2: 9 gridpoints (5 evaluations)
-[ Info: Iteration 3: 25 gridpoints (13 evaluations)
-[ Info: Iteration 4: 81 gridpoints (29 evaluations)
-[ Info: Iteration 5: 289 gridpoints (61 evaluations)
-[ Info: Iteration 6: 1089 gridpoints (125 evaluations)
-[ Info: Iteration 7: 4225 gridpoints (253 evaluations)
-BisectionGrid{Float64, 2}
-       Domain: (0.0:0.015625:1.0, 0.0:0.015625:1.0)
-  Grid points: 4225
-  Evaluations: 490</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/jbshannon/MultiBisect.jl/blob/7534a2c5f354c66eb899962aa81c6960477ffe11/src/bisection.jl#L291-L447">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="MultiBisect.corners-Tuple{CartesianIndices}" href="#MultiBisect.corners-Tuple{CartesianIndices}"><code>MultiBisect.corners</code></a> — <span class="docstring-category">Method</span></header><section><div><pre><code class="language-julia hljs">corners(CI::CartesianIndices)</code></pre><p>Construct an iterator over the corners of the hypercube defined by <code>CI</code>.</p><p><strong>Examples</strong></p><pre><code class="nohighlight hljs">julia&gt; CI = CartesianIndices((1:3, 1:4))
-CartesianIndices((1:3, 1:4))
+julia&gt; (xs, xs) == domain(BG)
+true
 
-julia&gt; collect(CI)
-3×4 Matrix{CartesianIndex{2}}:
- CartesianIndex(1, 1)  CartesianIndex(1, 2)  CartesianIndex(1, 3)  CartesianIndex(1, 4)
- CartesianIndex(2, 1)  CartesianIndex(2, 2)  CartesianIndex(2, 3)  CartesianIndex(2, 4)
- CartesianIndex(3, 1)  CartesianIndex(3, 2)  CartesianIndex(3, 3)  CartesianIndex(3, 4)
+julia&gt; efficiency(BG) # percentage of gridpoints not evaluated
+0.8840236686390532</code></pre><p>This efficiency gain is possible because we known that if a square in the grid has vertices that are not all the same sign, the function must change sign somewhere within the square (this is of course only a necessary and not a sufficient condition). The method proceeds by dividing an initial grid &quot;in half&quot; (in the multidimensional sense) at each stage. Since we are working in two dimensions, we break each square into four smaller squares. Before evaluating the function, we check the sign of the function at teh vertices of the larger square. If the function does not change sign, there is no need to evaluate the function within the square. By discarding squares whose vertices all share the same sign at each iteration, we avoid uninformative function evaluations. Here is a step-by-step view of the algorithm:</p><p>https://github.com/jbshannon/MultiBisect.jl/assets/46204520/f4fa8893-f073-40f7-8907-84308b91cc65</p><h2 id="Interpolation"><a class="docs-heading-anchor" href="#Interpolation">Interpolation</a><a id="Interpolation-1"></a><a class="docs-heading-anchor-permalink" href="#Interpolation" title="Permalink"></a></h2><p>Once we&#39;re satisfied we have enough information about where the function changes signs, we need to convert that information into actual points along the curve. This package examines the <em>edges</em> of the grid: two adjacent points with opposite signs. </p><pre><code class="language-julia-repl hljs">julia&gt; edges(BG)
+128-element Vector{Tuple{Tuple{Float64, Float64}, Tuple{Float64, Float64}}}:
+ ((0.984375, 0.0), (1.0, 0.0))
+ ((0.984375, 0.015625), (1.0, 0.015625))
+ ((0.984375, 0.03125), (1.0, 0.03125))
+ ((0.984375, 0.046875), (1.0, 0.046875))
+ ((0.984375, 0.0625), (1.0, 0.0625))
+ ⋮
+ ((0.125, 0.984375), (0.125, 1.0))
+ ((0.140625, 0.984375), (0.140625, 1.0))
+ ((0.15625, 0.984375), (0.15625, 1.0))
+ ((0.171875, 0.984375), (0.1875, 0.984375))
+ ((0.171875, 0.984375), (0.171875, 1.0))</code></pre><p>Since an edge is one-dimensional, we can convert the multidimensional root-finding problem to a series of one-dimensional problems. This packages provides the function <code>interpolate(rootfinder, BG)</code>, which takes a function <code>rootfinder</code> – taking an edge as input and returning a root as output – and applies it to each edge in the grid <code>BG</code>. This package currently provides three root-finders for convenience:</p><ul><li><code>edgeroot</code>: solve for the root on the edge with a call to <code>Roots.find_zero</code></li><li><code>linearroot</code>: create a linear interpolation of the function through the two edge points and compute its root</li><li><code>marchingsquares</code>: return the midpoint of the edge</li></ul><p>Here is a visual comparison of these different interpolation methods:</p><p><img src="images/README/interpolations.svg" alt/></p><h2 id="More-dimensions!"><a class="docs-heading-anchor" href="#More-dimensions!">More dimensions!</a><a id="More-dimensions!-1"></a><a class="docs-heading-anchor-permalink" href="#More-dimensions!" title="Permalink"></a></h2><p>Since Julia has the magical <code>CartesianIndices</code> iterator, translating this process out of two dimensions is as simple as changing the dimension of the initial evaluation grid. Here is an example finding roots of the 5d unit hypersphere over the unit 5d hypercube:</p><pre><code class="language-julia hljs">julia&gt; grid = ntuple(i -&gt; (0.0:1.0), 5)
+(0.0:1.0:1.0, 0.0:1.0:1.0, 0.0:1.0:1.0, 0.0:1.0:1.0, 0.0:1.0:1.0)
 
-julia&gt; corners(CI)
-CartesianIndices((1:2:3, 1:3:4))
+julia&gt; BG5 = bisect(f, grid)
+BisectionGrid{Float64, 5}
+       Domain: (0.0:0.0625:1.0, 0.0:0.0625:1.0, 0.0:0.0625:1.0, 0.0:0.0625:1.0, 0.0:0.0625:1.0)
+  Grid points: 1419857
+  Evaluations: 396246
 
-julia&gt; collect(corners(CI))
-2×2 Matrix{CartesianIndex{2}}:
- CartesianIndex(1, 1)  CartesianIndex(1, 4)
- CartesianIndex(3, 1)  CartesianIndex(3, 4)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/jbshannon/MultiBisect.jl/blob/7534a2c5f354c66eb899962aa81c6960477ffe11/src/bisection.jl#L125-L149">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="MultiBisect.domainindex-Union{Tuple{N}, Tuple{Any, CartesianIndex{N}}} where N" href="#MultiBisect.domainindex-Union{Tuple{N}, Tuple{Any, CartesianIndex{N}}} where N"><code>MultiBisect.domainindex</code></a> — <span class="docstring-category">Method</span></header><section><div><pre><code class="language-julia hljs">domainindex(X, I::CartesianIndex)</code></pre><p>Like <code>getindex</code>, except <code>X</code> is a tuple of ranges instead of an array.</p><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; X = (1.0:5.0, 0.5:2.5);
-
-julia&gt; domainindex(X, CartesianIndex(1, 1))
-(1.0, 0.5)
-
-julia&gt; domainindex(X, CartesianIndex(2, 1))
-(2.0, 0.5)
-
-julia&gt; domainindex(X, CartesianIndex(1, 2))
-(1.0, 1.5)
-
-julia&gt; domainindex(X, last(CartesianIndices(eachindex.(X))))
-(5.0, 2.5)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/jbshannon/MultiBisect.jl/blob/7534a2c5f354c66eb899962aa81c6960477ffe11/src/interpolation.jl#L23-L44">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="MultiBisect.edgebounds-Tuple{Any}" href="#MultiBisect.edgebounds-Tuple{Any}"><code>MultiBisect.edgebounds</code></a> — <span class="docstring-category">Method</span></header><section><div><pre><code class="language-julia hljs">edgebounds(edge)</code></pre><p>Return the bounds of the edge in its varying dimension.</p><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; edgebounds(((0.5, 1.0), (1.0, 1.0)))
-(0.5, 1.0)
-
-julia&gt; edgebounds(((0.5, 1.0), (0.5, 1.5)))
-(1.0, 1.5)
-
-julia&gt; edgebounds(((1.0, 1.0, 1.0), (1.0, 1.0, 2.0)))
-(1.0, 2.0)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/jbshannon/MultiBisect.jl/blob/7534a2c5f354c66eb899962aa81c6960477ffe11/src/interpolation.jl#L86-L103">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="MultiBisect.edgedim-Tuple{Any}" href="#MultiBisect.edgedim-Tuple{Any}"><code>MultiBisect.edgedim</code></a> — <span class="docstring-category">Method</span></header><section><div><pre><code class="language-julia hljs">edgedim(edge)</code></pre><p>Return the dimension of the edge (i.e. the only direction in which the vertices vary).</p><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; edgedim(((0.5, 1.0), (1.0, 1.0)))
-1
-
-julia&gt; edgedim(((0.5, 1.0), (0.5, 1.5)))
-2
-
-julia&gt; edgedim(((1.0, 1.0, 1.0), (1.0, 1.0, 2.0)))
-3</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/jbshannon/MultiBisect.jl/blob/7534a2c5f354c66eb899962aa81c6960477ffe11/src/interpolation.jl#L66-L82">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="MultiBisect.edgeroot-Tuple{Any, Any, Any}" href="#MultiBisect.edgeroot-Tuple{Any, Any, Any}"><code>MultiBisect.edgeroot</code></a> — <span class="docstring-category">Method</span></header><section><div><pre><code class="language-julia hljs">edgeroot(f, edge, M; kwargs...)</code></pre><p>Find the root along <code>edge</code> with a call to <code>Roots.find_zero</code>. Both <code>M</code> and <code>kwargs</code> are passed directly to <code>find_zero</code>.</p><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; f(x) = 1 - sum(abs2, x); # unit circle
-
-julia&gt; BG = bisect(f, (0.0:1.0, 0.0:1.0); iterations=3);
-
-julia&gt; E = edges(BG)
-8-element Vector{Tuple{Tuple{Float64, Float64}, Tuple{Float64, Float64}}}:
- ((0.75, 0.0), (1.0, 0.0))
- ((0.75, 0.25), (1.0, 0.25))
- ((0.75, 0.5), (1.0, 0.5))
- ((0.75, 0.5), (0.75, 0.75))
- ((0.0, 0.75), (0.0, 1.0))
- ((0.25, 0.75), (0.25, 1.0))
- ((0.5, 0.75), (0.75, 0.75))
- ((0.5, 0.75), (0.5, 1.0))
-
-julia&gt; tracks = Roots.Tracks();
-
-julia&gt; root = edgeroot(f, E[3], Roots.ITP(); tracks)
-(0.8660254037844387, 0.5)
-
-julia&gt; f(root)
-0.0
-
-julia&gt; tracks
-Results of univariate zero finding:
-
-* Converged to: 0.8660254037844387
-* Algorithm: Roots.ITP{Float64, Int64}(0.2, 2, 1)
-* iterations: 7
-* function evaluations ≈ 9
-* stopped as f(x_n) = 0
-
-Trace:
-(a₀, b₀) = ( 0.75, 1 )
-(a₁, b₁) = ( 0.75, 0.86964285714285705 )
-(a₂, b₂) = ( 0.86290337975046705, 0.86964285714285705 )
-(a₃, b₃) = ( 0.86290337975046705, 0.8660279692952968 )
-(a₄, b₄) = ( 0.86602344653979335, 0.8660279692952968 )
-(a₅, b₅) = ( 0.86602344653979335, 0.86602540378563075 )
-(a₆, b₆) = ( 0.86602540378367243, 0.86602540378563075 )
-(a₇, b₇) = ( 0.86602540378443871, 0.86602540378563075 )</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/jbshannon/MultiBisect.jl/blob/7534a2c5f354c66eb899962aa81c6960477ffe11/src/interpolation.jl#L129-L179">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="MultiBisect.edges-Union{Tuple{BisectionGrid{T, N}}, Tuple{N}, Tuple{T}} where {T, N}" href="#MultiBisect.edges-Union{Tuple{BisectionGrid{T, N}}, Tuple{N}, Tuple{T}} where {T, N}"><code>MultiBisect.edges</code></a> — <span class="docstring-category">Method</span></header><section><div><pre><code class="language-julia hljs">edges(BG::BisectionGrid{T, N}) where {T, N}</code></pre><p>Find all hypercube edges where the sign of the function changes. Returns a <code>Vector</code> of 2-tuples of points in the domain.</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/jbshannon/MultiBisect.jl/blob/7534a2c5f354c66eb899962aa81c6960477ffe11/src/interpolation.jl#L48-L52">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="MultiBisect.edgetuple-Tuple{Any}" href="#MultiBisect.edgetuple-Tuple{Any}"><code>MultiBisect.edgetuple</code></a> — <span class="docstring-category">Method</span></header><section><div><pre><code class="language-julia hljs">edgetuple(edge)</code></pre><p>Return a function converting a value along the edge dimension to a point.</p><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; tup = edgetuple(((0.5, 1.0), (1.0, 1.0)));
-
-julia&gt; tup(0.75)
-(0.75, 1.0)
-
-julia&gt; tup(0.9)
-(0.9, 1.0)
-
-julia&gt; edgetuple(((0.5, 1.0), (0.5, 1.5)))(1.2)
-(0.5, 1.2)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/jbshannon/MultiBisect.jl/blob/7534a2c5f354c66eb899962aa81c6960477ffe11/src/interpolation.jl#L107-L126">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="MultiBisect.expandzeros-Tuple{Any}" href="#MultiBisect.expandzeros-Tuple{Any}"><code>MultiBisect.expandzeros</code></a> — <span class="docstring-category">Method</span></header><section><div><pre><code class="language-julia hljs">expandzeros(A)</code></pre><p>Expand the array A, inserting a zero between each element.</p><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; A = reshape(1:4, 2, 2)
-2×2 reshape(::UnitRange{Int64}, 2, 2) with eltype Int64:
- 1  3
- 2  4
-
-julia&gt; expandzeros(A)
-3×3 Matrix{Int64}:
- 1  0  3
- 0  0  0
- 2  0  4
-
-julia&gt; B = reshape(1:6, 3, 2)
-3×2 reshape(::UnitRange{Int64}, 3, 2) with eltype Int64:
- 1  4
- 2  5
- 3  6
-
-julia&gt; expandzeros(B)
-5×3 Matrix{Int64}:
- 1  0  4
- 0  0  0
- 2  0  5
- 0  0  0
- 3  0  6</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/jbshannon/MultiBisect.jl/blob/7534a2c5f354c66eb899962aa81c6960477ffe11/src/bisection.jl#L60-L93">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="MultiBisect.forwardinds-Tuple{Any}" href="#MultiBisect.forwardinds-Tuple{Any}"><code>MultiBisect.forwardinds</code></a> — <span class="docstring-category">Method</span></header><section><div><pre><code class="language-julia hljs">forwardinds(d)</code></pre><p>Get CartesianIndex steps forward in each of <code>d</code> dimensions.</p><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; forwardinds(1)
-(CartesianIndex(1,),)
-
-julia&gt; forwardinds(2)
-(CartesianIndex(1, 0), CartesianIndex(0, 1))
-
-julia&gt; forwardinds(3)
-(CartesianIndex(1, 0, 0), CartesianIndex(0, 1, 0), CartesianIndex(0, 0, 1))</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/jbshannon/MultiBisect.jl/blob/7534a2c5f354c66eb899962aa81c6960477ffe11/src/interpolation.jl#L2-L19">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="MultiBisect.interpolate-Union{Tuple{N}, Tuple{T}, Tuple{Any, BisectionGrid{T, N}}} where {T, N}" href="#MultiBisect.interpolate-Union{Tuple{N}, Tuple{T}, Tuple{Any, BisectionGrid{T, N}}} where {T, N}"><code>MultiBisect.interpolate</code></a> — <span class="docstring-category">Method</span></header><section><div><pre><code class="language-julia hljs">interpolate(rootfinder, BG::BisectionGrid{T, N}; threaded=false) where {T, N}</code></pre><p>Compute the roots along all bracketing edges of <code>BG</code>.</p><p>The function <code>rootfinder</code> can be any method that receives an edge and returns a root, such as <a href="#MultiBisect.edgeroot-Tuple{Any, Any, Any}"><code>edgeroot</code></a>, <a href="#MultiBisect.linearroot-Tuple{Any, Any}"><code>linearroot</code></a>, or <a href="#MultiBisect.marchingsquares-Tuple{Any}"><code>marchingsquares</code></a>.</p><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; f(x) = 1 - sum(abs2, x); # unit circle
-
-julia&gt; BG = bisect(f, (0.0:1.0, 0.0:1.0); iterations=3);
-
-julia&gt; using MultiBisect: interpolate
-
-julia&gt; interpolate(marchingsquares, BG)
-8-element Vector{Tuple{Float64, Float64}}:
- (0.875, 0.0)
- (0.875, 0.25)
- (0.875, 0.5)
- (0.75, 0.625)
- (0.0, 0.875)
- (0.25, 0.875)
- (0.625, 0.75)
- (0.5, 0.875)
-
-julia&gt; interpolate(edge -&gt; linearroot(f, edge), BG)
-8-element Vector{Tuple{Float64, Float64}}:
- (1.0, 0.0)
- (0.9642857142857143, 0.25)
- (0.8571428571428571, 0.5)
- (0.75, 0.65)
- (0.0, 1.0)
- (0.25, 0.9642857142857143)
- (0.65, 0.75)
- (0.5, 0.8571428571428571)
-
-julia&gt; interpolate(edge -&gt; edgeroot(f, edge, Roots.ITP()), BG)
-8-element Vector{Tuple{Float64, Float64}}:
- (1.0, 0.0)
- (0.9682458365518543, 0.25)
- (0.8660254037844387, 0.5)
- (0.75, 0.6614378277661477)
- (0.0, 1.0)
- (0.25, 0.9682458365518543)
- (0.6614378277661477, 0.75)
- (0.5, 0.8660254037844387)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/jbshannon/MultiBisect.jl/blob/7534a2c5f354c66eb899962aa81c6960477ffe11/src/interpolation.jl#L279-L329">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="MultiBisect.linearroot-Tuple{Any, Any}" href="#MultiBisect.linearroot-Tuple{Any, Any}"><code>MultiBisect.linearroot</code></a> — <span class="docstring-category">Method</span></header><section><div><pre><code class="language-julia hljs">linearroot(f, edge)</code></pre><p>Construct a linear interpolation of <code>f</code> through <code>edge</code> and return its root. Requires two function evaluations.</p><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; f(x) = 1 - sum(abs2, x); # unit circle
-
-julia&gt; BG = bisect(f, (0.0:1.0, 0.0:1.0); iterations=3);
-
-julia&gt; E = edges(BG)
-8-element Vector{Tuple{Tuple{Float64, Float64}, Tuple{Float64, Float64}}}:
- ((0.75, 0.0), (1.0, 0.0))
- ((0.75, 0.25), (1.0, 0.25))
- ((0.75, 0.5), (1.0, 0.5))
- ((0.75, 0.5), (0.75, 0.75))
- ((0.0, 0.75), (0.0, 1.0))
- ((0.25, 0.75), (0.25, 1.0))
- ((0.5, 0.75), (0.75, 0.75))
- ((0.5, 0.75), (0.5, 1.0))
-
-julia&gt; linearroot.(f, E)
-8-element Vector{Tuple{Float64, Float64}}:
- (1.0, 0.0)
- (0.9642857142857143, 0.25)
- (0.8571428571428571, 0.5)
- (0.75, 0.65)
- (0.0, 1.0)
- (0.25, 0.9642857142857143)
- (0.65, 0.75)
- (0.5, 0.8571428571428571)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/jbshannon/MultiBisect.jl/blob/7534a2c5f354c66eb899962aa81c6960477ffe11/src/interpolation.jl#L233-L268">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="MultiBisect.marchingsquares-Tuple{Any}" href="#MultiBisect.marchingsquares-Tuple{Any}"><code>MultiBisect.marchingsquares</code></a> — <span class="docstring-category">Method</span></header><section><div><pre><code class="language-julia hljs">marchingsquares(edge)</code></pre><p>Return the midpoint of the edge, in a manner similar to the <a href="https://en.wikipedia.org/wiki/Marching_squares">marching squares algorithm</a>. Does not require any function evaluations.</p><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; f(x) = 1 - sum(abs2, x); # unit circle
-
-julia&gt; BG = bisect(f, (0.0:1.0, 0.0:1.0); iterations=3);
-
-julia&gt; E = edges(BG)
-8-element Vector{Tuple{Tuple{Float64, Float64}, Tuple{Float64, Float64}}}:
- ((0.75, 0.0), (1.0, 0.0))
- ((0.75, 0.25), (1.0, 0.25))
- ((0.75, 0.5), (1.0, 0.5))
- ((0.75, 0.5), (0.75, 0.75))
- ((0.0, 0.75), (0.0, 1.0))
- ((0.25, 0.75), (0.25, 1.0))
- ((0.5, 0.75), (0.75, 0.75))
- ((0.5, 0.75), (0.5, 1.0))
-
-julia&gt; marchingsquares.(E)
-8-element Vector{Tuple{Float64, Float64}}:
- (0.875, 0.0)
- (0.875, 0.25)
- (0.875, 0.5)
- (0.75, 0.625)
- (0.0, 0.875)
- (0.25, 0.875)
- (0.625, 0.75)
- (0.5, 0.875)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/jbshannon/MultiBisect.jl/blob/7534a2c5f354c66eb899962aa81c6960477ffe11/src/interpolation.jl#L192-L226">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="MultiBisect.revert-Tuple{BisectionGrid}" href="#MultiBisect.revert-Tuple{BisectionGrid}"><code>MultiBisect.revert</code></a> — <span class="docstring-category">Method</span></header><section><div><pre><code class="language-julia hljs">revert(BG::BisectionGrid; steps=1)</code></pre><p>Revert the grid <code>BG</code> by a given number of <code>steps</code> (e.g. go from the fourth iteration back to the third iteration).</p><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; f(x) = 1 - sum(abs2, x);
-
-julia&gt; grid = (0.0:1.0, 0.0:1.0);
-
-julia&gt; BG3 = bisect(f, grid; iterations=3)
-BisectionGrid{Float64, 2}
-       Domain: (0.0:0.25:1.0, 0.0:0.25:1.0)
-  Grid points: 25
-  Evaluations: 22
-
-
-julia&gt; BG4 = bisect(f, grid; iterations=4)
-BisectionGrid{Float64, 2}
-       Domain: (0.0:0.125:1.0, 0.0:0.125:1.0)
-  Grid points: 81
-  Evaluations: 51
-
-
-julia&gt; revert(BG4)
-BisectionGrid{Float64, 2}
-       Domain: (0.0:0.25:1.0, 0.0:0.25:1.0)
-  Grid points: 25
-  Evaluations: 22</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/jbshannon/MultiBisect.jl/blob/7534a2c5f354c66eb899962aa81c6960477ffe11/src/bisection.jl#L247-L279">source</a></section></article></article><nav class="docs-footer"><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="auto">Automatic (OS)</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.1.1 on <span class="colophon-date" title="Friday 13 October 2023 20:13">Friday 13 October 2023</span>. Using Julia version 1.9.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+julia&gt; interpolate(linearroot(f), BG5)
+124020-element Vector{NTuple{5, Float64}}:
+ (1.0, 0.0, 0.0, 0.0, 0.0)
+ (0.9979838709677419, 0.0625, 0.0, 0.0, 0.0)
+ (0.9919354838709677, 0.125, 0.0, 0.0, 0.0)
+ (0.9818548387096774, 0.1875, 0.0, 0.0, 0.0)
+ (0.967741935483871, 0.25, 0.0, 0.0, 0.0)
+ ⋮
+ (0.0625, 0.0625, 0.125, 0.3125, 0.9375)
+ (0.0, 0.08333333333333333, 0.125, 0.3125, 0.9375)
+ (0.0, 0.0625, 0.1375, 0.3125, 0.9375)
+ (0.0, 0.0625, 0.125, 0.3181818181818182, 0.9375)
+ (0.0, 0.0625, 0.125, 0.3125, 0.9395161290322581)</code></pre></article><nav class="docs-footer"><a class="docs-footer-nextpage" href="api/">API Reference »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="auto">Automatic (OS)</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.1.1 on <span class="colophon-date" title="Saturday 14 October 2023 18:11">Saturday 14 October 2023</span>. Using Julia version 1.9.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
