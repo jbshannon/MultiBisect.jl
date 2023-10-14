@@ -1,7 +1,9 @@
 # MultiBisect.jl
 
 [![Build Status](https://github.com/jbshannon/MultiBisect.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/jbshannon/MultiBisect.jl/actions/workflows/CI.yml?query=branch%3Amain)
-[![Coverage](https://codecov.io/gh/jbshannon/MultiBisect.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/jbshannon/MultiBisect.jl)
+[![](https://img.shields.io/badge/docs-stable-blue.svg)](https://jbshannon.github.io/MultiBisect.jl/stable)
+[![](https://img.shields.io/badge/docs-dev-blue.svg)](https://jbshannon.github.io/MultiBisect.jl/dev)
+
 
 This Julia package provides a lightweight, idiomatic implementation of the [bisection method](https://en.wikipedia.org/wiki/Bisection_method) of root-finding in an arbitrary number of dimensions.
 
