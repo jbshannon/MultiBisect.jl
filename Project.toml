@@ -1,7 +1,7 @@
 name = "MultiBisect"
 uuid = "66877b0d-840f-4af8-a0b5-b62f5ea465b3"
 authors = ["Jack Shannon <j.b.shannon@lse.ac.uk> and contributors"]
-version = "1.0.0-DEV"
+version = "0.1.0"
 
 [deps]
 Logging = "56ddb016-857b-54e1-b83d-db4d58db5568"
