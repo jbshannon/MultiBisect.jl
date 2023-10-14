@@ -16,11 +16,22 @@ function BisectionGrid(grid)
     return BisectionGrid{T, N}(signs, evaluated, toevaluate, domain)
 end
 
+function countedges(BG::BisectionGrid)
+    S = BG.signs
+    CI = CartesianIndices(S)
+    s = 0
+    for I in CI, d in forwardinds(length(I))
+        (min(I+d, last(CI)) != I) && (S[I] != S[I+d]) && (s += 1)
+    end
+    return s
+end
+
 function show(io::IO, G::BisectionGrid{T, N}) where {T, N}
     println(io, typeof(G))
     println(io, "       Domain: $(G.domain)")
     println(io, "  Grid points: $(length(G.signs))")
     println(io, "  Evaluations: $(sum(G.evaluated))")
+    print(  io, "        Edges: $(countedges(G))")
 end
 
 ## Property retrieval API
@@ -30,6 +41,40 @@ evaluations(BG::BisectionGrid) = sum(evaluated(BG))
 domain(BG::BisectionGrid) = BG.domain
 efficiency(BG::BisectionGrid) = 1 - evaluations(BG)/length(evaluated(BG))
 
+
+"""
+    splitsign(BG::BisectionGrid)
+
+Split the evaluated points of the bisection grid into a vector of positive points and a vector of negative points.
+
+# Examples
+```jldoctest
+julia> BG = bisect(x -> 1 - sum(abs2, x), (0.0:1.0, 0.0:1.0); iterations=2)
+BisectionGrid{Float64, 2}
+       Domain: (0.0:0.5:1.0, 0.0:0.5:1.0)
+  Grid points: 9
+  Evaluations: 9
+        Edges: 4
+
+julia> posx, negx = splitsign(BG);
+
+
+julia> posx
+4-element Vector{Tuple{Float64, Float64}}:
+ (0.0, 0.0)
+ (0.5, 0.0)
+ (0.0, 0.5)
+ (0.5, 0.5)
+
+julia> negx
+5-element Vector{Tuple{Float64, Float64}}:
+ (1.0, 0.0)
+ (1.0, 0.5)
+ (0.0, 1.0)
+ (0.5, 1.0)
+ (1.0, 1.0)
+```
+"""
 function splitsign(BG::BisectionGrid)
     E = evaluated(BG)
     S = BG.signs
@@ -128,15 +173,15 @@ hypercube(H; dist=2) = range(H, H + dist*one(H))
 Construct an iterator over the corners of the hypercube defined by `CI`.
 
 # Examples
-```
+```jldoctest
 julia> CI = CartesianIndices((1:3, 1:4))
 CartesianIndices((1:3, 1:4))
 
 julia> collect(CI)
 3×4 Matrix{CartesianIndex{2}}:
- CartesianIndex(1, 1)  CartesianIndex(1, 2)  CartesianIndex(1, 3)  CartesianIndex(1, 4)
- CartesianIndex(2, 1)  CartesianIndex(2, 2)  CartesianIndex(2, 3)  CartesianIndex(2, 4)
- CartesianIndex(3, 1)  CartesianIndex(3, 2)  CartesianIndex(3, 3)  CartesianIndex(3, 4)
+ CartesianIndex(1, 1)  CartesianIndex(1, 2)  …  CartesianIndex(1, 4)
+ CartesianIndex(2, 1)  CartesianIndex(2, 2)     CartesianIndex(2, 4)
+ CartesianIndex(3, 1)  CartesianIndex(3, 2)     CartesianIndex(3, 4)
 
 julia> corners(CI)
 CartesianIndices((1:2:3, 1:3:4))
@@ -154,6 +199,43 @@ function corners(CI::CartesianIndices)
 end
 
 # find starting indices of all hypercubes in the expanded array
+"""
+    findhypercubes(A; dist=2)
+
+Find the starting vertex of all hypercubes in the array `A`.
+
+# Examples
+```jldoctest
+julia> A = ones(Bool, 5, 5)
+5×5 Matrix{Bool}:
+ 1  1  1  1  1
+ 1  1  1  1  1
+ 1  1  1  1  1
+ 1  1  1  1  1
+ 1  1  1  1  1
+
+julia> cubes = findhypercubes(A)
+CartesianIndices((1:2:3, 1:2:3))
+
+julia> collect(cubes)
+2×2 Matrix{CartesianIndex{2}}:
+ CartesianIndex(1, 1)  CartesianIndex(1, 3)
+ CartesianIndex(3, 1)  CartesianIndex(3, 3)
+
+julia> cubes3 = findhypercubes(ones(Bool, 5, 5, 5))
+CartesianIndices((1:2:3, 1:2:3, 1:2:3))
+
+julia> collect(cubes3)
+2×2×2 Array{CartesianIndex{3}, 3}:
+[:, :, 1] =
+ CartesianIndex(1, 1, 1)  CartesianIndex(1, 3, 1)
+ CartesianIndex(3, 1, 1)  CartesianIndex(3, 3, 1)
+
+[:, :, 2] =
+ CartesianIndex(1, 1, 3)  CartesianIndex(1, 3, 3)
+ CartesianIndex(3, 1, 3)  CartesianIndex(3, 3, 3)
+```
+"""
 function findhypercubes(A; dist=2)
     CI = CartesianIndices(A)
     F = first(CI)
@@ -162,7 +244,7 @@ function findhypercubes(A; dist=2)
     return F:Δ:L-Δ
 end
 
-equalcorners(A, I) = all(i -> A[i] == A[I], corners(hypercube(I)))
+equalcorners(A, I; dist=2) = all(i -> A[i] == A[I], corners(hypercube(I; dist)))
 
 isadjacent(I, J; dist=2) = abs(sum(Tuple(I-J))) == dist
 
@@ -261,6 +343,7 @@ BisectionGrid{Float64, 2}
        Domain: (0.0:0.25:1.0, 0.0:0.25:1.0)
   Grid points: 25
   Evaluations: 22
+        Edges: 8
 
 
 julia> BG4 = bisect(f, grid; iterations=4)
@@ -268,6 +351,7 @@ BisectionGrid{Float64, 2}
        Domain: (0.0:0.125:1.0, 0.0:0.125:1.0)
   Grid points: 81
   Evaluations: 51
+        Edges: 16
 
 
 julia> revert(BG4)
@@ -275,6 +359,7 @@ BisectionGrid{Float64, 2}
        Domain: (0.0:0.25:1.0, 0.0:0.25:1.0)
   Grid points: 25
   Evaluations: 22
+        Edges: 8
 ```
 """
 function revert(BG::BisectionGrid; steps=1)
@@ -318,6 +403,7 @@ BisectionGrid{Float64, 2}
        Domain: (0.0:0.0625:1.0, 0.0:0.0625:1.0)
   Grid points: 289
   Evaluations: 112
+        Edges: 32
 
 
 julia> bisect(x -> x[2] - x[1], grid)
@@ -325,6 +411,7 @@ BisectionGrid{Float64, 2}
        Domain: (0.0:0.0625:1.0, 0.0:0.0625:1.0)
   Grid points: 289
   Evaluations: 112
+        Edges: 32
 
 
 julia> bisect(x -> x[2] - x[1], grid; monotonic=true)
@@ -332,6 +419,7 @@ BisectionGrid{Float64, 2}
        Domain: (0.0:0.0625:1.0, 0.0:0.0625:1.0)
   Grid points: 289
   Evaluations: 67
+        Edges: 32
 ```
 
 # Extended help
@@ -345,7 +433,7 @@ The algorithm proceeds by splitting a grid of ``N``-dimensional hypercubes in "h
 Set the keyword argument `threaded=true` to make evaluation of the function at each iteration multithreaded. For functions that are very cheap to evaluate, the overhead from setting up threads will actually make each iteration longer. However, this effect disappears quickly.
 
 ### Example
-```
+```julia-repl
 julia> ffast(x) = 1 - sum(abs2, x);
 
 julia> grid = (0.0:1.0, 0.0:1.0);
@@ -371,12 +459,13 @@ julia> @btime bisect(fslow, \$grid; threaded=true);
 If the function `f` is known to be monotonic, then the number of evaluations can be reduced by inferring the behavior of `f` along edges where both vertices have the same sign.
 
 ### Example
-```
+```jldoctest
 julia> bisect(x -> 1 - sum(abs2, x), (0.0:1.0, 0.0:1.0); monotonic=false)
 BisectionGrid{Float64, 2}
        Domain: (0.0:0.0625:1.0, 0.0:0.0625:1.0)
   Grid points: 289
   Evaluations: 112
+        Edges: 32
 
 
 julia> bisect(x -> 1 - sum(abs2, x), (0.0:1.0, 0.0:1.0); monotonic=true)
@@ -384,6 +473,7 @@ BisectionGrid{Float64, 2}
        Domain: (0.0:0.0625:1.0, 0.0:0.0625:1.0)
   Grid points: 289
   Evaluations: 80
+        Edges: 32
 ```
 
 ## Iterations
@@ -391,12 +481,13 @@ BisectionGrid{Float64, 2}
 For finer grids, repeat the algorithm for more iterations.
 
 ### Example
-```
+```jldoctest
 julia> bisect(x -> 1 - sum(abs2, x), (0.0:1.0, 0.0:1.0))
 BisectionGrid{Float64, 2}
        Domain: (0.0:0.0625:1.0, 0.0:0.0625:1.0)
   Grid points: 289
   Evaluations: 112
+        Edges: 32
 
 
 julia> bisect(x -> 1 - sum(abs2, x), (0.0:1.0, 0.0:1.0); iterations=3)
@@ -404,6 +495,7 @@ BisectionGrid{Float64, 2}
        Domain: (0.0:0.25:1.0, 0.0:0.25:1.0)
   Grid points: 25
   Evaluations: 22
+        Edges: 8
 
 
 julia> bisect(x -> 1 - sum(abs2, x), (0.0:1.0, 0.0:1.0); iterations=7)
@@ -411,6 +503,7 @@ BisectionGrid{Float64, 2}
        Domain: (0.0:0.015625:1.0, 0.0:0.015625:1.0)
   Grid points: 4225
   Evaluations: 490
+        Edges: 128
 ```
 
 ## Logging
@@ -418,7 +511,7 @@ BisectionGrid{Float64, 2}
 For longer-running bisections, it may be useful to report the number of new evaluations as a kind of thread-safe progress meter.
 
 ### Example
-```
+```jldoctest
 julia> bisect(x -> 1 - sum(abs2, x), (0.0:1.0, 0.0:1.0); verbose=true)
 [ Info: Iteration 1: 4 gridpoints (4 evaluations)
 [ Info: Iteration 2: 9 gridpoints (5 evaluations)
@@ -429,6 +522,7 @@ BisectionGrid{Float64, 2}
        Domain: (0.0:0.0625:1.0, 0.0:0.0625:1.0)
   Grid points: 289
   Evaluations: 112
+        Edges: 32
 
 
 julia> bisect(x -> 1 - sum(abs2, x), (0.0:1.0, 0.0:1.0); verbose=true, iterations=7)
@@ -443,6 +537,7 @@ BisectionGrid{Float64, 2}
        Domain: (0.0:0.015625:1.0, 0.0:0.015625:1.0)
   Grid points: 4225
   Evaluations: 490
+        Edges: 128
 ```
 """
 function bisect(f, grid; threaded=false, monotonic=false, iterations=5, verbose=false)

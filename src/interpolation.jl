@@ -46,7 +46,7 @@ domainindex(X, I::CartesianIndex{N}) where N = ntuple(i -> getindex(X[i], I[i]),
 
 
 """
-    edges(BG::BisectionGrid{T, N}) where {T, N}
+    edges(BG::BisectionGrid)
 
 Find all hypercube edges where the sign of the function changes. Returns a `Vector` of 2-tuples of points in the domain.
 """
@@ -114,6 +114,7 @@ Return a function converting a value along the edge dimension to a point.
 ```jldoctest
 julia> tup = edgetuple(((0.5, 1.0), (1.0, 1.0)));
 
+
 julia> tup(0.75)
 (0.75, 1.0)
 
@@ -138,6 +139,7 @@ julia> f(x) = 1 - sum(abs2, x); # unit circle
 
 julia> BG = bisect(f, (0.0:1.0, 0.0:1.0); iterations=3);
 
+
 julia> E = edges(BG)
 8-element Vector{Tuple{Tuple{Float64, Float64}, Tuple{Float64, Float64}}}:
  ((0.75, 0.0), (1.0, 0.0))
@@ -150,6 +152,7 @@ julia> E = edges(BG)
  ((0.5, 0.75), (0.5, 1.0))
 
 julia> tracks = Roots.Tracks();
+
 
 julia> root = edgeroot(f, E[3], Roots.ITP(); tracks)
 (0.8660254037844387, 0.5)
@@ -201,6 +204,7 @@ julia> f(x) = 1 - sum(abs2, x); # unit circle
 
 julia> BG = bisect(f, (0.0:1.0, 0.0:1.0); iterations=3);
 
+
 julia> E = edges(BG)
 8-element Vector{Tuple{Tuple{Float64, Float64}, Tuple{Float64, Float64}}}:
  ((0.75, 0.0), (1.0, 0.0))
@@ -242,6 +246,7 @@ function evaluations.
 julia> f(x) = 1 - sum(abs2, x); # unit circle
 
 julia> BG = bisect(f, (0.0:1.0, 0.0:1.0); iterations=3);
+
 
 julia> E = edges(BG)
 8-element Vector{Tuple{Tuple{Float64, Float64}, Tuple{Float64, Float64}}}:
@@ -291,6 +296,7 @@ julia> f(x) = 1 - sum(abs2, x); # unit circle
 
 julia> BG = bisect(f, (0.0:1.0, 0.0:1.0); iterations=3);
 
+
 julia> using MultiBisect: interpolate
 
 julia> interpolate(marchingsquares, BG)
@@ -327,7 +333,7 @@ julia> interpolate(edge -> edgeroot(f, edge, Roots.ITP()), BG)
  (0.5, 0.8660254037844387)
 ```
 """
-function interpolate(rootfinder, BG::BisectionGrid{T, N}; threaded=false) where {T, N}
+function interpolate(rootfinder, BG::BisectionGrid; threaded=false)
     if threaded
         spawned = map(edge -> @spawn(rootfinder(edge)), edges(BG))
         return fetch.(spawned)
