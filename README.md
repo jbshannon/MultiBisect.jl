@@ -32,7 +32,7 @@ ax = Axis(fig[1, 1])
 lines!(ax, circle; color=:black)
 fig
 ```
-![](docs/images/README/circle1.svg)
+![](docs/src/images/README/circle1.svg)
 
 ### The Problem
 
@@ -47,7 +47,7 @@ scatter!(ax, XS[F .> 0]; markersize=3)
 scatter!(ax, XS[F .≤ 0]; markersize=3)
 fig
 ```
-![](docs/images/README/circle2.svg)
+![](docs/src/images/README/circle2.svg)
 
 The level curve must lie between the positive points and the negative points. Two adjacent points that share the same sign do not tell us anything about the level curve, so we could improve our efficiency if we avoided evaluating the function in regions where the sign does not appear to change.
 
@@ -67,7 +67,7 @@ scatter!(ax, posx; markersize=3)
 scatter!(ax, negx; markersize=3)
 fig
 ```
-![](docs/images/README/circle3.svg)
+![](docs/src/images/README/circle3.svg)
 
 The resulting grid is the same size and identifies the exact same sign changes as before, but with far fewer function evaluations – nearly 90% fewer!
 
@@ -118,7 +118,7 @@ Since an edge is one-dimensional, we can convert the multidimensional root-findi
 
 Here is a visual comparison of these different interpolation methods:
 
-![](docs/images/README/interpolations.svg)
+![](docs/src/images/README/interpolations.svg)
 
 ### More dimensions!
 
