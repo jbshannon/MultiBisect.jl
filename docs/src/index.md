@@ -123,7 +123,7 @@ Here is a visual comparison of these different interpolation methods:
 
 Since Julia has the magical `CartesianIndices` iterator, translating this process out of two dimensions is as simple as changing the dimension of the initial evaluation grid. Here is an example finding roots of the 5d unit hypersphere over the unit 5d hypercube:
 
-```julia
+```julia-repl
 julia> grid = ntuple(i -> (0.0:1.0), 5)
 (0.0:1.0:1.0, 0.0:1.0:1.0, 0.0:1.0:1.0, 0.0:1.0:1.0, 0.0:1.0:1.0)
 
