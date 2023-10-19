@@ -5,7 +5,7 @@
 [![](https://img.shields.io/badge/docs-dev-blue.svg)](https://jbshannon.github.io/MultiBisect.jl/dev)
 
 
-This Julia package provides a lightweight, idiomatic implementation of the [bisection method](https://en.wikipedia.org/wiki/Bisection_method) of root-finding in an arbitrary number of dimensions.
+This Julia package provides a lightweight, idiomatic implementation of the [bisection method](https://en.wikipedia.org/wiki/Bisection_method) of root-finding in an arbitrary number of dimensions, which can be used to find level curves or other higher-dimensional isosurfaces of a function with fewer evaluations.
 
 This package exports the `BisectionGrid` type, which tracks an `N`-dimensional bisection with only three `Array{Bool, N}`s and one `NTuple{N, R <: AbstractRange}`. Using ordinary boolean arrays not only uses minimal memory, but also leverages the magic of base Julia's `CartesianIndices` to handle any number of dimensions without code modification.
 
@@ -14,10 +14,16 @@ This package exports the `BisectionGrid` type, which tracks an `N`-dimensional b
 
 ## Installation
 
-This package is not yet registered, so installation is only available by url from the `pkg>` prompt:
+This pakcage is now registered, so installation is available from the `pkg>` prompt:
 
 ```julia
-pkg> add https://github.com/jbshannon/MultiBisect.jl
+pkg> add MultiBisect
+```
+
+or in a script:
+
+```julia
+import Pkg; Pkg.add("MultiBisect")
 ```
 
 ## Overview
