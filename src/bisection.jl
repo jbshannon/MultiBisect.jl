@@ -426,7 +426,9 @@ BisectionGrid{Float64, 2}
 
 ## Algorithm
 
-The algorithm proceeds by splitting a grid of ``N``-dimensional hypercubes in "half".
+The algorithm begins with an initial evaluation grid of ``N``-dimensional hypercubes (lines, squares, cubes, etc.) and proceeds by splitting it in "half" at each stage, but only in regions where the function is known to change sign. After the function is evaluated, each hypercube is split in half (a line into two lines, a square into four squares, a cube into eight cubes, etc.) and the function sign at each vertex is checked. If not all vertices share the same sign, the function must change sign somewhere within the hypercube, so the vertices of the subcubes (e.g. the midpoint of a line) will be marked for evaluation in the next stage; if the vertices all share the same sign, the function is presumed to have the same sign everywhere throughout the hypercube, so the sign is inferred at all interior points and the function is not evaluated in the hypercube again.
+
+By passing the keyword `monotonic=true`, the algorithm further assumes that the function cannot change sign in any one direction between two points with the same sign. This means that the sign of the function should be checked at the vertices of each edge of the hypercube; if the signs are the same, the function is assumed to have the same sign at the midpoint along the edge and will not be evaluated.
 
 ## Multithreading
 
