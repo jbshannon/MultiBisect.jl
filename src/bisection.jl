@@ -3,17 +3,21 @@ struct BisectionGrid{T <: Number, N}
     evaluated::Array{Bool, N}
     toevaluate::Array{Bool, N}
     domain::NTuple{N, AbstractRange{T}}
+    evaluations::Vector{T}
+    evalinds::Vector{CartesianIndex{N}}
 end
 
 function BisectionGrid(grid)
     sz = size(CartesianIndices(eachindex.(grid)))
     signs = zeros(Bool, sz)
     toevaluate = ones(Bool, sz)
-    evaluated=zeros(Bool, sz)
+    evaluated = zeros(Bool, sz)
     domain = convert.(promote_type(typeof.(grid)...), grid)
     N = length(domain)
     T = eltype(first(domain))
-    return BisectionGrid{T, N}(signs, evaluated, toevaluate, domain)
+    evaluations = T[]
+    evalinds = CartesianIndex{N}[]
+    return BisectionGrid{T, N}(signs, evaluated, toevaluate, domain, evaluations, evalinds)
 end
 
 function countedges(BG::BisectionGrid)
@@ -153,12 +157,25 @@ function expanddomain(X)
     end
 end
 
+function expandinds!(evalinds, domain)
+    L = length.(domain)
+    N = length(domain)
+    newI = ntuple(d -> 1:2:(2L[d]-1), N)
+    for i in eachindex(evalinds)
+        I = Tuple(evalinds[i])
+        evalinds[i] = CartesianIndex(ntuple(j -> newI[j][I[j]], N))
+    end
+    return evalinds
+end
+
 function expand(G::BisectionGrid)
     return BisectionGrid(
         expandzeros(G.signs),
         expandzeros(G.evaluated),
         expandzeros(G.toevaluate),
         expanddomain(G.domain),
+        G.evaluations,
+        expandinds!(G.evalinds, G.domain),
     )
 end
 
@@ -285,91 +302,97 @@ function fillnonbracketing!(BG::BisectionGrid; kwargs...)
     return BG
 end
 
-function evaluate!(f, signs, toevaluate, evaluated, domain; threaded=false)
+function _evaluate!(f, signs, toevaluate, evaluated, domain, evaluations, evalinds, I)
+    val = f(ntuple(j -> domain[j][Tuple(I)[j]], ndims(signs)))
+    signs[I] = val > 0
+    evaluated[I] = true
+    toevaluate[I] = false
+    push!(evaluations, val)
+    push!(evalinds, I)
+    return val
+end
+
+function evaluate!(f, signs, toevaluate, evaluated, domain, evaluations, evalinds; threaded=false)
     if threaded
         @threads for I in filter(I -> toevaluate[I], CartesianIndices(signs))
-            signs[I] = f(ntuple(j -> domain[j][Tuple(I)[j]], ndims(signs))) > 0
-            evaluated[I] = true
-            toevaluate[I] = false
+            _evaluate!(f, signs, toevaluate, evaluated, domain, evaluations, evalinds, I)
         end
     else
         for I in Iterators.filter(I -> toevaluate[I], CartesianIndices(signs))
-            signs[I] = f(ntuple(j -> domain[j][Tuple(I)[j]], ndims(signs))) > 0
-            evaluated[I] = true
-            toevaluate[I] = false
+            _evaluate!(f, signs, toevaluate, evaluated, domain, evaluations, evalinds, I)
         end
     end
     return signs, evaluated
 end
 
 function evaluate!(f, BG::BisectionGrid; kwargs...)
-    evaluate!(f, BG.signs, BG.toevaluate, BG.evaluated, BG.domain; kwargs...)
+    evaluate!(f, BG.signs, BG.toevaluate, BG.evaluated, BG.domain, BG.evaluations, BG.evalinds; kwargs...)
 end
 
 ## Revert
 # Only useful if you want to try a more expensive interpolation method
 
-function _revert(A::AbstractArray; steps=1)
-    CI = CartesianIndices(A)
-    IF = first(CI)
-    IL = last(CI)
-    Δ = 2^steps * one(IF)
-    return A[IF:Δ:IL]
-end
+# function _revert(A::AbstractArray; steps=1)
+#     CI = CartesianIndices(A)
+#     IF = first(CI)
+#     IL = last(CI)
+#     Δ = 2^steps * one(IF)
+#     return A[IF:Δ:IL]
+# end
 
-function _revert(X::NTuple{N, R}; steps=1) where {N, R <: AbstractRange}
-    ntuple(length(X)) do i
-        r = X[i]
-        newlength = 1 + (length(r) - 1) ÷ (2^steps)
-        return range(first(r), last(r); length=newlength)
-    end
-end
-
-
-"""
-    revert(BG::BisectionGrid; steps=1)
-
-Revert the grid `BG` by a given number of `steps` (e.g. go from the fourth iteration back to the third iteration).
-
-# Examples
-
-```jldoctest
-julia> f(x) = 1 - sum(abs2, x);
-
-julia> grid = (0.0:1.0, 0.0:1.0);
-
-julia> BG3 = bisect(f, grid; iterations=3)
-BisectionGrid{Float64, 2}
-       Domain: (0.0:0.25:1.0, 0.0:0.25:1.0)
-  Grid points: 25
-  Evaluations: 22
-        Edges: 8
+# function _revert(X::NTuple{N, R}; steps=1) where {N, R <: AbstractRange}
+#     ntuple(length(X)) do i
+#         r = X[i]
+#         newlength = 1 + (length(r) - 1) ÷ (2^steps)
+#         return range(first(r), last(r); length=newlength)
+#     end
+# end
 
 
-julia> BG4 = bisect(f, grid; iterations=4)
-BisectionGrid{Float64, 2}
-       Domain: (0.0:0.125:1.0, 0.0:0.125:1.0)
-  Grid points: 81
-  Evaluations: 51
-        Edges: 16
+# """
+#     revert(BG::BisectionGrid; steps=1)
+
+# Revert the grid `BG` by a given number of `steps` (e.g. go from the fourth iteration back to the third iteration).
+
+# # Examples
+
+# ```jldoctest
+# julia> f(x) = 1 - sum(abs2, x);
+
+# julia> grid = (0.0:1.0, 0.0:1.0);
+
+# julia> BG3 = bisect(f, grid; iterations=3)
+# BisectionGrid{Float64, 2}
+#        Domain: (0.0:0.25:1.0, 0.0:0.25:1.0)
+#   Grid points: 25
+#   Evaluations: 22
+#         Edges: 8
 
 
-julia> revert(BG4)
-BisectionGrid{Float64, 2}
-       Domain: (0.0:0.25:1.0, 0.0:0.25:1.0)
-  Grid points: 25
-  Evaluations: 22
-        Edges: 8
-```
-"""
-function revert(BG::BisectionGrid; steps=1)
-    BisectionGrid(
-        _revert(BG.signs; steps),
-        _revert(BG.evaluated; steps),
-        _revert(BG.toevaluate; steps),
-        _revert(BG.domain; steps),
-    )
-end
+# julia> BG4 = bisect(f, grid; iterations=4)
+# BisectionGrid{Float64, 2}
+#        Domain: (0.0:0.125:1.0, 0.0:0.125:1.0)
+#   Grid points: 81
+#   Evaluations: 51
+#         Edges: 16
+
+
+# julia> revert(BG4)
+# BisectionGrid{Float64, 2}
+#        Domain: (0.0:0.25:1.0, 0.0:0.25:1.0)
+#   Grid points: 25
+#   Evaluations: 22
+#         Edges: 8
+# ```
+# """
+# function revert(BG::BisectionGrid; steps=1)
+#     BisectionGrid(
+#         _revert(BG.signs; steps),
+#         _revert(BG.evaluated; steps),
+#         _revert(BG.toevaluate; steps),
+#         _revert(BG.domain; steps),
+#     )
+# end
 
 ## Bisection function
 

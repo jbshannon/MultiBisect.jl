@@ -114,7 +114,6 @@ Return a function converting a value along the edge dimension to a point.
 ```jldoctest
 julia> tup = edgetuple(((0.5, 1.0), (1.0, 1.0)));
 
-
 julia> tup(0.75)
 (0.75, 1.0)
 
@@ -139,7 +138,6 @@ julia> f(x) = 1 - sum(abs2, x); # unit circle
 
 julia> BG = bisect(f, (0.0:1.0, 0.0:1.0); iterations=3);
 
-
 julia> E = edges(BG)
 8-element Vector{Tuple{Tuple{Float64, Float64}, Tuple{Float64, Float64}}}:
  ((0.75, 0.0), (1.0, 0.0))
@@ -152,7 +150,6 @@ julia> E = edges(BG)
  ((0.5, 0.75), (0.5, 1.0))
 
 julia> tracks = Roots.Tracks();
-
 
 julia> root = edgeroot(f, E[3], Roots.ITP(); tracks)
 (0.8660254037844387, 0.5)
@@ -247,7 +244,6 @@ julia> f(x) = 1 - sum(abs2, x); # unit circle
 
 julia> BG = bisect(f, (0.0:1.0, 0.0:1.0); iterations=3);
 
-
 julia> E = edges(BG)
 8-element Vector{Tuple{Tuple{Float64, Float64}, Tuple{Float64, Float64}}}:
  ((0.75, 0.0), (1.0, 0.0))
@@ -296,9 +292,6 @@ julia> f(x) = 1 - sum(abs2, x); # unit circle
 
 julia> BG = bisect(f, (0.0:1.0, 0.0:1.0); iterations=3);
 
-
-julia> using MultiBisect: interpolate
-
 julia> interpolate(marchingsquares, BG)
 8-element Vector{Tuple{Float64, Float64}}:
  (0.875, 0.0)
@@ -340,4 +333,56 @@ function interpolate(rootfinder, BG::BisectionGrid; threaded=false)
     else
         return rootfinder.(edges(BG))
     end
+end
+
+"""
+    interpolate(BG::BisectionGrid{T, N}) where {T, N}
+
+Compute the roots along all bracketing edges of `BG` with a linear approximation using precomputed function evaluations. Equivalent to `interpolate(linearroot(f), BG)`, but does not require re-evaluating the function at each edge.
+
+# Examples
+
+```jldoctest
+julia> f(x) = 1 - sum(abs2, x); # unit circle
+
+julia> BG = bisect(f, (0.0:1.0, 0.0:1.0); iterations=3);
+
+julia> interpolate(linearroot(f), BG)
+8-element Vector{Tuple{Float64, Float64}}:
+ (1.0, 0.0)
+ (0.9642857142857143, 0.25)
+ (0.8571428571428571, 0.5)
+ (0.75, 0.65)
+ (0.0, 1.0)
+ (0.25, 0.9642857142857143)
+ (0.65, 0.75)
+ (0.5, 0.8571428571428571)
+
+julia> interpolate(BG)
+8-element Vector{Tuple{Float64, Float64}}:
+ (1.0, 0.0)
+ (0.9642857142857143, 0.25)
+ (0.8571428571428571, 0.5)
+ (0.75, 0.65)
+ (0.0, 1.0)
+ (0.25, 0.9642857142857143)
+ (0.65, 0.75)
+ (0.5, 0.8571428571428571)
+
+"""
+function interpolate(BG::BisectionGrid)
+    # Map from points in the domain to evaluations
+    _getindex = Base.Fix1(domainindex, domain(BG))
+    IV = zip(BG.evalinds, BG.evaluations)
+    f = Dict(_getindex(I) => val for (I, val) in IV)
+
+    # Find roots using linear interpolation
+    roots = map(edges(BG)) do edge
+        x = edgebounds(edge)
+        b = (f[edge[2]] - f[edge[1]])/(x[2] - x[1])
+        a = f[edge[1]] - b*x[1]
+        return edgetuple(edge)(-a/b)
+    end
+
+    return roots
 end

@@ -14,7 +14,7 @@ This package exports the `BisectionGrid` type, which tracks an `N`-dimensional b
 
 ## Installation
 
-This pakcage is now registered, so installation is available from the `pkg>` prompt:
+This package is now registered, so installation is available from the `pkg>` prompt:
 
 ```julia
 pkg> add MultiBisect
@@ -94,7 +94,7 @@ julia> efficiency(BG) # percentage of gridpoints not evaluated
 0.8840236686390532
 ```
 
-This efficiency gain is possible because we known that if a square in the grid has vertices that are not all the same sign, the function must change sign somewhere within the square (this is of course only a necessary and not a sufficient condition). The method proceeds by dividing an initial grid "in half" (in the multidimensional sense) at each stage. Since we are working in two dimensions, we break each square into four smaller squares. Before evaluating the function, we check the sign of the function at teh vertices of the larger square. If the function does not change sign, there is no need to evaluate the function within the square. By discarding squares whose vertices all share the same sign at each iteration, we avoid uninformative function evaluations. Here is a step-by-step view of the algorithm:
+This efficiency gain is possible because we known that if a square in the grid has vertices that are not all the same sign, the function must change sign somewhere within the square (this is of course only a necessary and not a sufficient condition). The method proceeds by dividing an initial grid "in half" (in the multidimensional sense) at each stage. Since we are working in two dimensions, we break each square into four smaller squares. Before evaluating the function, we check the sign of the function at the vertices of the larger square. If the function does not change sign, there is no need to evaluate the function within the square. By discarding squares whose vertices all share the same sign at each iteration, we avoid uninformative function evaluations. Here is a step-by-step view of the algorithm:
 
 https://github.com/jbshannon/MultiBisect.jl/assets/46204520/f4fa8893-f073-40f7-8907-84308b91cc65
 
@@ -128,9 +128,11 @@ Here is a visual comparison of these different interpolation methods:
 
 ![](docs/src/images/README/interpolations.svg)
 
+When function evaluations are very expensive, `interpolate` can be called without a `rootfinder` argument to use the linear approximation method with saved function evaluations from the bisection process.
+
 ### More dimensions!
 
-Since Julia has the magical `CartesianIndices` iterator, translating this process out of two dimensions is as simple as changing the dimension of the initial evaluation grid. Here is an example finding roots of the 5d unit hypersphere over the unit 5d hypercube:
+Since Julia has the magical `CartesianIndices` iterator, translating this process out of two dimensions is as simple as changing the dimension of the initial evaluation grid. Here is an example finding roots of the 5D unit hypersphere over the 5D unit hypercube:
 
 ```julia
 julia> grid = ntuple(i -> (0.0:1.0), 5)
