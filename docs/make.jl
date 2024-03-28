@@ -3,7 +3,7 @@ using Documenter
 
 DocTestSetup = quote
     using MultiBisect
-    using MultiBisect: forwardinds, expandzeros, edgetuple, edgebounds, edgedim, domainindex, revert, findhypercubes, corners
+    using MultiBisect: forwardinds, expandzeros, edgetuple, edgebounds, edgedim, domainindex, findhypercubes, corners
     import MultiBisect.Roots as Roots
 end
 DocMeta.setdocmeta!(MultiBisect, :DocTestSetup, DocTestSetup; recursive=true)
