@@ -44,22 +44,46 @@ julia> domainindex(X, last(CartesianIndices(eachindex.(X))))
 """
 domainindex(X, I::CartesianIndex{N}) where N = ntuple(i -> getindex(X[i], I[i]), N)
 
+"""
+    edgeindices(BG::BisectionGrid{T, N}) where {T, N}
+
+Find the `CartesianIndices` of all edges in the current grid domain.
+"""
+function edgeindices(BG::BisectionGrid{T, N}) where {T, N}
+    S = BG.signs
+    CI = CartesianIndices(S)
+    EI = NTuple{2, eltype(CI)}[]
+    for I in CI, d in forwardinds(N)
+        inside = min(I+d, last(CI)) != I # the forward step does not go outside the array
+        inside && (S[I] != S[I+d]) && push!(EI, (I, I+d))
+    end
+    return EI
+end
+
+"""
+    edgevalues!(f, BG::BisectionGrid{T, N}; threaded=false, verbose=false) where {T, N}
+
+Evaluate `f` at all edge vertices where it has not been evaluated.
+"""
+function edgevalues!(f, BG::BisectionGrid{T, N}; threaded=false, verbose=false) where {T, N}
+    needeval = BG |> edgeindices |> Base.Iterators.flatten |> unique
+    for I in filter(I -> !BG.evaluated[I], needeval)
+        BG.toevaluate[I] = true
+    end
+    verbose && @info("Evaluating remaining edge points: $(length(BG.signs)) gridpoints ($(sum(BG.toevaluate)) evaluations)")
+    evaluate!(f, BG; threaded)
+    return BG
+end
 
 """
     edges(BG::BisectionGrid)
 
 Find all hypercube edges where the sign of the function changes. Returns a `Vector` of 2-tuples of points in the domain.
 """
-function edges(BG::BisectionGrid{T, N}) where {T, N}
-    S = BG.signs
-    _getindex = Base.Fix1(domainindex, domain(BG))
-    CI = CartesianIndices(S)
-    edgevec = NTuple{2, NTuple{N, T}}[] # vector of edges
-    for I in CI, d in forwardinds(N)
-        inside = min(I+d, last(CI)) != I # the forward step does not go outside the array
-        inside && (S[I] != S[I+d]) && push!(edgevec, _getindex.((I, I+d)))
+edges(BG::BisectionGrid{T, N}) where {T, N} = map(edgeindices(BG)) do EI
+    map(EI) do I # both edge points
+        domainindex(domain(BG), I) # convert indices to points in the domain
     end
-    return edgevec
 end
 
 
