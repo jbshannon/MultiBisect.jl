@@ -104,7 +104,7 @@ using MultiBisect: forwardinds, domainindex, edgedim, edgebounds
 
         # Test that different methods give different results
         # Use elementwise comparison for tuples
-        differences = [!isapprox(ms_roots[i][j], linear_roots[i][j]) for i in 1:length(ms_roots) for j in 1:length(ms_roots[i])]
+        differences = [!isapprox(ms_roots[i][j], linear_roots[i][j]) for i in eachindex(ms_roots) for j in eachindex(ms_roots[i])]
         @test any(differences)
     end
 
