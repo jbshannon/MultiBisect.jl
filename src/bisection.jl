@@ -23,8 +23,8 @@ end
 ## Helper functions for Tuple{Bool, Bool} sign system
 
 # Functions on Tuple{Bool, Bool} directly
-ispositive(sign::Tuple{Bool, Bool}) = sign == (true, false)
-isnegative(sign::Tuple{Bool, Bool}) = sign == (false, true)
+ispositivesign(sign::Tuple{Bool, Bool}) = sign == (true, false)
+isnegativesign(sign::Tuple{Bool, Bool}) = sign == (false, true)
 iszerosign(sign::Tuple{Bool, Bool}) = sign == (false, false)  # Renamed to avoid conflict with Base.iszero
 isevaluated(sign::Tuple{Bool, Bool}) = sign != (true, true)
 
@@ -103,9 +103,9 @@ function splitsign(BG::BisectionGrid)
     neginds = eltype(CI)[]
     foreach(I -> begin
         sign = S[I]
-        if ispositive(sign)
+        if ispositivesign(sign)
             push!(posinds, I)
-        elseif isnegative(sign)
+        elseif isnegativesign(sign)
             push!(neginds, I)
         end
         # Zeros are excluded from both arrays

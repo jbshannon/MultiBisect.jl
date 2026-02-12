@@ -10,7 +10,7 @@ export BisectionGrid
 export domain, evaluated, evaluations, efficiency, splitsign
 export bisect
 export edges, interpolate, edgeroot, linearroot, marchingsquares
-export ispositive, isnegative, iszerosign, isevaluated, differentsigns
+export ispositivesign, isnegativesign, iszerosign, isevaluated, differentsigns
 
 include("bisection.jl")
 include("interpolation.jl")
