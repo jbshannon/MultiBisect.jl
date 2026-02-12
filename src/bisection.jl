@@ -65,7 +65,7 @@ efficiency(BG::BisectionGrid) = 1 - evaluations(BG)/length(evaluated(BG))
 """
     splitsign(BG::BisectionGrid)
 
-Split the evaluated points of the bisection grid into a vector of positive points and a vector of negative points.
+Split the evaluated points of the bisection grid into a vector of positive points and a vector of negative points. Zero-valued evaluations are excluded from both arrays.
 
 # Examples
 ```jldoctest
