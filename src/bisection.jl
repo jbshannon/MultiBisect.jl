@@ -120,7 +120,7 @@ function filldouble!(B, A)
     C = CartesianIndices(B)
     CF = first(C)
     CL = last(C)
-    C2 = 2*one(CF)
+    C2 = 2*oneunit(CF)
     for (AC, BC) in enumerate(CF:C2:CL)
         B[BC] = A[AC]
     end
@@ -212,7 +212,7 @@ end
 ## Hypercubes
 
 # iterate over all elements of the hypercube
-hypercube(H; dist=2) = range(H, H + dist*one(H))
+hypercube(H; dist=2) = range(H, H + dist*oneunit(H))
 
 """
     corners(CI::CartesianIndices)
@@ -287,7 +287,7 @@ function findhypercubes(A; dist=2)
     CI = CartesianIndices(A)
     F = first(CI)
     L = last(CI)
-    Δ = dist*one(F)
+    Δ = dist*oneunit(F)
     return F:Δ:L-Δ
 end
 
