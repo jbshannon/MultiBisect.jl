@@ -58,10 +58,10 @@ using MultiBisect: forwardinds, domainindex, edgedim, edgebounds
         
         # Test splitsign
         posx, negx = splitsign(BG)
-        # Count non-zero evaluations (zeros are excluded from both arrays)
+        # Count zero values directly from signs array
+        zero_count = count(sign -> sign == (false, false), BG.signs[BG.evaluated])
         pos_count = length(posx)
         neg_count = length(negx)
-        zero_count = evaluations(BG) - pos_count - neg_count
         @test pos_count + neg_count + zero_count == evaluations(BG)
         @test all(x -> f(x) > 0, posx)  # Strictly positive now
         @test all(x -> f(x) < 0, negx)  # Strictly negative now
