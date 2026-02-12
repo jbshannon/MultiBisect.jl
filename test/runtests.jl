@@ -58,9 +58,13 @@ using MultiBisect: forwardinds, domainindex, edgedim, edgebounds
         
         # Test splitsign
         posx, negx = splitsign(BG)
-        @test length(posx) + length(negx) == evaluations(BG)
-        @test all(x -> f(x) >= 0, posx)  # Allow zero due to exact roots
-        @test all(x -> f(x) <= 0, negx)  # Allow zero due to exact roots
+        # Count non-zero evaluations (zeros are excluded from both arrays)
+        pos_count = length(posx)
+        neg_count = length(negx)
+        zero_count = evaluations(BG) - pos_count - neg_count
+        @test pos_count + neg_count + zero_count == evaluations(BG)
+        @test all(x -> f(x) > 0, posx)  # Strictly positive now
+        @test all(x -> f(x) < 0, negx)  # Strictly negative now
         
         # Test edges
         edge_list = edges(BG)

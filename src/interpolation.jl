@@ -55,7 +55,7 @@ function edgeindices(BG::BisectionGrid{T, N}) where {T, N}
     EI = NTuple{2, eltype(CI)}[]
     for I in CI, d in forwardinds(N)
         inside = min(I+d, last(CI)) != I # the forward step does not go outside the array
-        inside && (S[I] != S[I+d]) && push!(EI, (I, I+d))
+        inside && differentsigns(S, I, I+d) && push!(EI, (I, I+d))
     end
     return EI
 end
