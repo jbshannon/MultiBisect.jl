@@ -1,5 +1,5 @@
 struct BisectionGrid{T <: Number, N}
-    signs::Array{Bool, N}
+    signs::Array{Tuple{Bool, Bool}, N}
     evaluated::Array{Bool, N}
     toevaluate::Array{Bool, N}
     domain::NTuple{N, AbstractRange{T}}
@@ -9,7 +9,7 @@ end
 
 function BisectionGrid(grid)
     sz = size(CartesianIndices(eachindex.(grid)))
-    signs = zeros(Bool, sz)
+    signs = fill((true, true), sz)  # All start as unevaluated
     toevaluate = ones(Bool, sz)
     evaluated = zeros(Bool, sz)
     domain = convert.(promote_type(typeof.(grid)...), grid)
@@ -20,12 +20,28 @@ function BisectionGrid(grid)
     return BisectionGrid{T, N}(signs, evaluated, toevaluate, domain, evaluations, evalinds)
 end
 
+## Helper functions for Tuple{Bool, Bool} sign system
+
+# Functions on Tuple{Bool, Bool} directly
+ispositivesign(sign::Tuple{Bool, Bool}) = sign == (true, false)
+isnegativesign(sign::Tuple{Bool, Bool}) = sign == (false, true)
+iszerosign(sign::Tuple{Bool, Bool}) = sign == (false, false)  # Renamed to avoid conflict with Base.iszero
+isevaluated(sign::Tuple{Bool, Bool}) = sign != (true, true)
+
+# Edge detection including zero-adjacent edges
+function differentsigns(signs::Array{Tuple{Bool, Bool}, N}, I1, I2) where N
+    s1, s2 = signs[I1], signs[I2]
+    # Different if at least one boolean differs AND both are evaluated
+    return (s1 != s2) && isevaluated(s1) && isevaluated(s2)
+end
+
 function countedges(BG::BisectionGrid)
     S = BG.signs
     CI = CartesianIndices(S)
     s = 0
     for I in CI, d in forwardinds(length(I))
-        (min(I+d, last(CI)) != I) && (S[I] != S[I+d]) && (s += 1)
+        inside = min(I+d, last(CI)) != I
+        inside && differentsigns(S, I, I+d) && (s += 1)
     end
     return s
 end
@@ -49,7 +65,7 @@ efficiency(BG::BisectionGrid) = 1 - evaluations(BG)/length(evaluated(BG))
 """
     splitsign(BG::BisectionGrid)
 
-Split the evaluated points of the bisection grid into a vector of positive points and a vector of negative points.
+Split the evaluated points of the bisection grid into a vector of positive points and a vector of negative points. Zero-valued evaluations are excluded from both arrays.
 
 # Examples
 ```jldoctest
@@ -85,7 +101,15 @@ function splitsign(BG::BisectionGrid)
     CI = Iterators.filter(I -> E[I], CartesianIndices(E)) # evaluated indices
     posinds = eltype(CI)[]
     neginds = eltype(CI)[]
-    foreach(I -> S[I] ? push!(posinds, I) : push!(neginds, I), CI)
+    foreach(I -> begin
+        sign = S[I]
+        if ispositivesign(sign)
+            push!(posinds, I)
+        elseif isnegativesign(sign)
+            push!(neginds, I)
+        end
+        # Zeros are excluded from both arrays
+    end, CI)
     _getindex = Base.Fix1(domainindex, domain(BG))
     return (_getindex.(posinds), _getindex.(neginds))
 end
@@ -96,7 +120,7 @@ function filldouble!(B, A)
     C = CartesianIndices(B)
     CF = first(C)
     CL = last(C)
-    C2 = 2*one(CF)
+    C2 = 2*oneunit(CF)
     for (AC, BC) in enumerate(CF:C2:CL)
         B[BC] = A[AC]
     end
@@ -141,12 +165,18 @@ julia> expandzeros(B)
 ```
 """
 function expandzeros(A)
-    B = zeros(eltype(A), doublesize(A))
+    if eltype(A) == Tuple{Bool, Bool}
+        B = fill((false, false), doublesize(A))  # Fill with zero values for expansion
+    elseif eltype(A) == Bool
+        B = zeros(eltype(A), doublesize(A))  # Original behavior for Bool arrays
+    else
+        B = zeros(eltype(A), doublesize(A))  # Fallback for other types
+    end
     filldouble!(B, A)
 end
 
 function expandones(A)
-    B = ones(eltype(A), doublesize(A))
+    B = fill((true, true), doublesize(A))  # Fill with unevaluated values
     filldouble!(B, A)
 end
 
@@ -171,8 +201,8 @@ end
 function expand(G::BisectionGrid)
     return BisectionGrid(
         expandzeros(G.signs),
-        expandzeros(G.evaluated),
-        expandzeros(G.toevaluate),
+        expandzeros(G.evaluated),  # This works for Bool arrays
+        expandzeros(G.toevaluate),  # This works for Bool arrays
         expanddomain(G.domain),
         G.evaluations,
         expandinds!(G.evalinds, G.domain),
@@ -182,7 +212,7 @@ end
 ## Hypercubes
 
 # iterate over all elements of the hypercube
-hypercube(H; dist=2) = range(H, H + dist*one(H))
+hypercube(H; dist=2) = range(H, H + dist*oneunit(H))
 
 """
     corners(CI::CartesianIndices)
@@ -257,11 +287,11 @@ function findhypercubes(A; dist=2)
     CI = CartesianIndices(A)
     F = first(CI)
     L = last(CI)
-    Δ = dist*one(F)
+    Δ = dist*oneunit(F)
     return F:Δ:L-Δ
 end
 
-equalcorners(A, I; dist=2) = all(i -> A[i] == A[I], corners(hypercube(I; dist)))
+equalcorners(A, I; dist=2) = all(i -> isevaluated(A[i]) && A[i] == A[I], corners(hypercube(I; dist)))
 
 isadjacent(I, J; dist=2) = abs(sum(Tuple(I-J))) == dist
 
@@ -287,9 +317,11 @@ function fillnonbracketing!(signs, toevaluate; monotonic=false)
     end
     if monotonic # handle points on edges that have the same sign
         for H in cubes, V in corners(hypercube(H))
-            if isadjacent(V, H) && signs[V] == signs[H]
+            H_sign = signs[H]
+            V_sign = signs[V]
+            if isadjacent(V, H) && isevaluated(H_sign) && isevaluated(V_sign) && H_sign == V_sign
                 midpoint = (H:V)[2] # index between two vertices
-                signs[midpoint] = signs[H] # sign is known (same as both edges)
+                signs[midpoint] = H_sign # sign is known (same as both edges)
                 toevaluate[midpoint] = false # do not evaluate
             end
         end
@@ -304,7 +336,13 @@ end
 
 function _evaluate!(f, signs, toevaluate, evaluated, domain, evaluations, evalinds, I)
     val = f(ntuple(j -> domain[j][Tuple(I)[j]], ndims(signs)))
-    signs[I] = val > 0
+    if val > 0
+        signs[I] = (true, false)
+    elseif val < 0
+        signs[I] = (false, true)
+    else  # val == 0
+        signs[I] = (false, false)
+    end
     evaluated[I] = true
     toevaluate[I] = false
     push!(evaluations, val)
